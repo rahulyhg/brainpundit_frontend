@@ -50,7 +50,7 @@ class App extends Component {
     else {
         return (
           <div>
-            {lat==0? <div></div>:<StyledMapWithAnInfoBox lat={this.state.lat} lng={this.state.lng}/>}
+            {lat===0? <div></div>:<StyledMapWithAnInfoBox lat={this.state.lat} lng={this.state.lng}/>}
             <br/>
             <br/>
             <NewsList articles={this.state.articles}/>

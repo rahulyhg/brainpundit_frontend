@@ -26,8 +26,8 @@ class SearchPlace extends Component {
         return (
             <div className="Search_Form">
                 <form onSubmit={this.onSubmit}>
-                    <input value={text} name="text" onChange={this.onChange} className="Search_Bar"/>
-                    <button type="submit">Submit</button>
+                    <input value={text} name="text" placeholder="Enter Place" onChange={this.onChange} className="Search_Bar"/>
+                    <button type="submit" className="btn btn-success">Submit</button>
                 </form>
             </div>
         )

@@ -21,6 +21,10 @@ class App extends Component {
   locationInfoSearch(inputText) {
     const url = `https://cors-helper.herokuapp.com/https://brainpundit-apis.herokuapp.com/v1/places?name=${inputText}`
     let context = this;
+    context.setState({
+      lat : 0,
+      lng : 0
+    });
     axios.get(url).then((response) => {
       console.log(response.data);
       context.setState({

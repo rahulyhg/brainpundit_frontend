@@ -3,13 +3,16 @@ import SearchPlace from './components/searchPlace';
 import NewsList from './components/news_list';
 import axios from 'axios';
 import './App.css';
+import { StyledMapWithAnInfoBox } from './components/Map';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       locationInfo: null,
-      articles: []
+      articles: [],
+      lat:0,
+      lng:0,
     };
     this.locationInfoSearch = this.locationInfoSearch.bind(this);
   }
@@ -21,17 +24,27 @@ class App extends Component {
       console.log(response.data);
       context.setState({
         locationInfo : response.data,
-        articles : response.data.articles
+        articles : response.data.articles,
+        lat : response.data.loc.coordinates[1],
+        lng : response.data.loc.coordinates[0]
       });
     }).catch((error) => {
       console.log("ERROR",error);
     });
   }
 
+  componentDidMount(){
+    window.google = window.google ? window.google : {}
+  }
+
   render() {
+    const {lat} = this.state;
     return (
       <div className="App">
         <SearchPlace onTextSubmit={this.locationInfoSearch}/>
+        {lat==0? <div></div>:<StyledMapWithAnInfoBox lat={this.state.lat} lng={this.state.lng}/>}
+        <br/>
+        <br/>
         <NewsList articles={this.state.articles}/>
       </div>
     );

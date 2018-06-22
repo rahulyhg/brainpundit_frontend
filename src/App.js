@@ -13,6 +13,7 @@ class App extends Component {
       articles: [],
       lat:0,
       lng:0,
+      error:null
     };
     this.locationInfoSearch = this.locationInfoSearch.bind(this);
   }
@@ -26,10 +27,16 @@ class App extends Component {
         locationInfo : response.data,
         articles : response.data.articles,
         lat : response.data.loc.coordinates[1],
-        lng : response.data.loc.coordinates[0]
+        lng : response.data.loc.coordinates[0],
+        error:null
       });
+    
     }).catch((error) => {
+      window.open("/notfound")
       console.log("ERROR",error);
+      context.setState({
+        error:"No Location"
+      });
     });
   }
 
@@ -37,15 +44,28 @@ class App extends Component {
     window.google = window.google ? window.google : {}
   }
 
+   newsContent({lat,error}) {
+    if(error)
+      return(<div><h1>Location Not Found</h1></div>);
+    else {
+        return (
+          <div>
+            {lat==0? <div></div>:<StyledMapWithAnInfoBox lat={this.state.lat} lng={this.state.lng}/>}
+            <br/>
+            <br/>
+            <NewsList articles={this.state.articles}/>
+          </div>
+        );
+      }
+    }
+
+
+
   render() {
-    const {lat} = this.state;
     return (
       <div className="App">
-        <SearchPlace onTextSubmit={this.locationInfoSearch}/>
-        {lat==0? <div></div>:<StyledMapWithAnInfoBox lat={this.state.lat} lng={this.state.lng}/>}
-        <br/>
-        <br/>
-        <NewsList articles={this.state.articles}/>
+        <SearchPlace onTextSubmit={this.locationInfoSearch}/> 
+        {this.newsContent(this.state)}
       </div>
     );
   }
